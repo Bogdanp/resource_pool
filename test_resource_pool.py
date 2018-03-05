@@ -20,6 +20,22 @@ def test_can_reserve_elements_from_a_pool():
     assert len(pool) == 32
 
 
+def test_resources_get_put_back_on_error():
+    # Given that I have a resource pool
+    pool = Pool(lambda: {"test": 42}, pool_size=32)
+
+    # When I try to reserve an element
+    try:
+        with pool.reserve():
+            # And an unhandled exception occurs within the block
+            raise Exception()
+    except Exception:
+        pass
+
+    # Then my resource should still be returned to the pool
+    assert len(pool) == 32
+
+
 def test_get_can_timeout():
     # Given that I have a resource pool of one element
     pool = Pool(lambda: {}, pool_size=1)

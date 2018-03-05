@@ -63,8 +63,10 @@ class Pool(Generic[ResourceT]):
           A resource.
         """
         resource = self.get(timeout=timeout)
-        yield resource
-        self.put(resource)
+        try:
+            yield resource
+        finally:
+            self.put(resource)
 
     def get(self, *, timeout: Optional[float] = None) -> ResourceT:
         """Get a resource from the pool.
