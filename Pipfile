@@ -15,6 +15,7 @@ pytest = "*"
 pytest-cov = "*"
 twine = "*"
 bumpversion = "*"
+mypy = "*"
 
 
 [requires]

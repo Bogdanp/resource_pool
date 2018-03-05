@@ -2,7 +2,7 @@ import typing
 
 from contextlib import contextmanager
 from queue import Queue, Empty, Full
-from typing import Generic, Optional
+from typing import Generator, Generic, Optional
 
 __all__ = ["PoolError", "PoolTimeout", "PoolFull", "Pool", "__version__"]
 __version__ = "0.1.0"
@@ -34,6 +34,9 @@ class Pool(Generic[ResourceT]):
       pool_size: The max number of resources in the pool at any time.
     """
 
+    _pool: Queue
+    _pool_size: int
+
     def __init__(self, factory: ResourceFactory, *, pool_size: int) -> None:
         self._pool = Queue(pool_size)
         self._pool_size = pool_size
@@ -42,14 +45,28 @@ class Pool(Generic[ResourceT]):
             self.put(factory())
 
     @contextmanager
-    def reserve(self, timeout: Optional[float] = None):
-        """
+    def reserve(self, timeout: Optional[float] = None) -> Generator[ResourceT, None, None]:
+        """Reserve a resource and then put it back.
+
+        Example:
+          with pool.reserve(timeout=10) as res:
+            print(res)
+
+        Raises:
+          Timeout: If a timeout is given and it expires.
+
+        Parameters:
+          timeout: An optional timeout representing how long to wait
+            for the resource.
+
+        Returns:
+          A resource.
         """
         resource = self.get(timeout=timeout)
         yield resource
         self.put(resource)
 
-    def get(self, *, timeout: Optional[float] = None):
+    def get(self, *, timeout: Optional[float] = None) -> ResourceT:
         """Get a resource from the pool.
 
         It's the getter's responsibility to put the resource back once
