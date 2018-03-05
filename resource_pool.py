@@ -5,7 +5,7 @@ from queue import Queue, Empty, Full
 from typing import Generator, Generic, Optional
 
 __all__ = ["PoolError", "PoolTimeout", "PoolFull", "Pool", "__version__"]
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 ResourceT = typing.TypeVar("ResourceT")
 ResourceFactory = typing.Callable[[], ResourceT]
