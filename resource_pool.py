@@ -6,7 +6,7 @@ from typing import Generator, Generic, Optional, List
 from threading import Condition
 
 __all__ = ["PoolError", "PoolTimeout", "PoolFull", "Pool", "LazyPool", "__version__"]
-__version__ = "0.1.2"
+__version__ = "0.2.0"
 
 ResourceT = typing.TypeVar("ResourceT")
 ResourceFactory = typing.Callable[[], ResourceT]
