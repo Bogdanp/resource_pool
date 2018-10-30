@@ -26,6 +26,17 @@ setup(
     packages=[],
     py_modules=["resource_pool"],
     install_requires=[],
+    extras_require={
+        "dev": [
+            "bumpversion",
+            "flake8",
+            "flake8-quotes",
+            "mypy",
+            "pytest",
+            "pytest-cov",
+            "twine",
+        ],
+    },
     python_requires=">=3.5",
     include_package_data=True,
 )

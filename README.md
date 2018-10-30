@@ -4,7 +4,7 @@ A generic thread-safe resource pool implementation for Python.
 
 ## Installation
 
-    pipenv install resource_pool
+    pip install resource_pool
 
 
 ## Usage
